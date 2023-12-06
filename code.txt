@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+df= pd.read_excel('finalsheet1final.xlsx')
+df.head()
+ohe = OneHotEncoder(handle_unknown='ignore')
+ohe.fit(df[['Material','Test type']])
+data= ohe.transform(df[['Material','Test type']]).toarray()
+list(ohe.get_feature_names_out())
+df1 = df[['Tool diameter','Spindle speed','Step depth','Feed rate']]
+df_final_train = pd.concat([df1, temp],axis=1, ignore_index=False)
+df_final_train
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(df_final_train,df['Formability'])
+import pickle
+
+# Assuming 'model' is your trained model
+# Assuming 'metadata' is your metadata (numeric_features, categorical_features, etc.)
+
+# Save the model
+with open('trained_model.pkl', 'wb') as model_file:
+    pickle.dump(model, model_file)
+
+# Save metadata
+with open('model_metadata.pkl', 'wb') as metadata_file:
+    pickle.dump(df_final_train, metadata_file)
